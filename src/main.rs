@@ -5,10 +5,11 @@ mod contral_flow;
 mod iter0;
 mod leet_code;
 mod scoping;
+mod fn0;
 
 fn main() {
-    iter0::test();
+    fn0::test();
     let a = 3;
     let b = "ds";
-    println!("Hello, world!");
+    println!("__________________________________________");
 }
