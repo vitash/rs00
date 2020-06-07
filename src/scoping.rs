@@ -8,9 +8,14 @@ pub fn test() {
     fn3();
 }
 
+struct Box1<T>(T);
 fn fn1() {
+    let b1 = Box1(3);
+    let Box1(b) = b1;
+
     let p1 = Point { x: 3, y: 4 };
     let Point { ref x, .. } = p1;
+    let b2 = Some(Box::new(1));
 }
 
 fn fn2(a: i32, b: Option<i32>) {

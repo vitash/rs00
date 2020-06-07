@@ -1,0 +1,7 @@
+# 前后花费40分钟，无果，狗屎  https://rust-lang.github.io/rustfmt/?#single_line_if_else_max_width
+# width_heuristics = "off" # 无效设置，fmt 不能用了
+max_width = 200
+single_line_if_else_max_width = 100 # 单行限制扩大一点会死吗？？？？？？？？？
+
+
+
