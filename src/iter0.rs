@@ -13,4 +13,11 @@ fn fn2() {
     }
 }
 
-fn fn3() {}
+use std::time;
+fn fn3(r1: Result<i8, ()>) {
+    
+    let max_time = time::Instant::now();
+    for _ in 0..1000 {
+        println!("ds")
+    }
+}

@@ -40,39 +40,16 @@ fn t_rotate2() {
 
 pub fn merge_56(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     if intervals.len() < 1 { return intervals;}
+    let mut intervals = intervals;
+    intervals.sort_by_key(|v| v[0]);
+
     let mut res = vec![];
-    // let mut a = intervals[0][0];
-    // intervals.into_iter().fold_first(|v1, v2| {
-    //     if v1[0] > v2[1] { 
-    //         res.push(v1);
-    //         v1 = v2;
-    //     } else if v2[1] > v1[1] {
-    //          v1[1] = v2[1]; 
-    //     }
-    //     v1
-    // });
-    // let mut start = intervals[0][0];
-    // let mut end = intervals[0][1];
-    // for v1 in intervals.into_iter() {
-    //     if v1[0] > end { 
-    //         res.push(vec![start, end]);
-    //         start = v1[0];
-    //         end = v1[1];
-    //      }
-    //     if v1[0] <= end && v1[1] > end  { end = v1[1]; }
-    // }
     let mut curr = intervals[0].clone();
     for v in intervals.into_iter() {
-        if v[0] > curr[1] { 
+        if v[0] > curr[1] {
             res.push(curr);
             curr = v;
             continue;
-        } 
-        if v[0] < curr[0] {
-            curr[0] = v[0]; 
-        }
-        if v[1] > curr[1] {
-            curr[1] = v[1]; 
         }
         curr = vec![std::cmp::min(v[0], curr[0]), std::cmp::max(v[1], curr[1])];
     }
@@ -84,4 +61,48 @@ pub fn merge_56(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
 fn t_merge_65() {
     let res = merge_56(vec![vec![1,3],vec![2,6],vec![8,10],vec![15,18]]);
     assert_eq!(res, vec![vec![1,6],vec![8,10],vec![15,18]]);
+
+    let res = merge_56(vec![vec![1,4],vec![0,0]]);
+    assert_eq!(res, vec![vec![0,0],vec![1,4]]);
+}
+
+pub fn merge_88(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
+    // 如果全程使用类型约束，必须使用 usize，那么数组就下标就应该从 1 开始！
+    // 
+    if n < 1 { return; }
+    let mut i1 = m - 1; 
+    let mut i2  = n as usize - 1;
+    loop {
+        if i1 == -1 || nums2[i2] >= nums1[i1 as usize] {
+            nums1[(i1 + 1) as usize + i2] = nums2[i2];
+            if i2 == 0 { return; }
+            i2 -= 1;
+        } else {
+            nums1[(i1 + 1) as usize + i2] = nums1[i1 as usize];
+            i1 -= 1;
+        }
+    }
+}
+
+pub fn merge_88_usize(nums1: &mut Vec<i32>, mut m: usize, nums2: &mut Vec<i32>, mut n: usize) {
+    if n < 1 { return; }
+    loop {
+        if m == 0 || nums2[n - 1] >= nums1[m - 1] {
+            nums1[m + n - 1] = nums2[n];
+            if n == 0 { return; }
+            n -= 1;
+        } else {
+            nums1[m + n - 1] = nums1[m - 1];
+            m -= 1;
+        }
+    }
+}
+
+pub fn t_88(ref mut a: Vec<i32>) {
+    if a.len() > 100 { return; }
+    a.push(3);
+    t_88(vec![1, 2]);
+
+    let b = vec![1, 3];
+    t_88(b);
 }

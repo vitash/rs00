@@ -37,3 +37,20 @@ pub fn remove_nth_from_end(head: Option<Box<ListNode>>, n: i32) -> Option<Box<Li
     return head;
 }
 
+// pub fn is_palindrome_234(head: Option<Box<ListNode>>) -> bool {
+//     let mut head = head;
+//     let mut front_node = &mut head;
+//     fn check(node: &Option<Box<ListNode>>, front_node: &mut Option<Box<ListNode>>) -> bool {
+//         match node {
+//             None => true,
+//             Some(node) => {
+//                 if !check(&node.next, front_node) { return false; }
+//                 else if front_node.take().unwrap().val != node.val { return false; }
+//                 front_node = &mut front_node.unwrap().next;
+//                 return true;
+//             }
+//         }
+//     };
+
+//     return check(&front_node, &mut front_node);
+// }
