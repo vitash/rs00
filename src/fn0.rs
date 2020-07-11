@@ -52,3 +52,18 @@ fn closure2(p1: Point) {
 fn closure3(p1: Point) {
     // let
 }
+
+struct S1(String); // 这个也可以做函数指针
+enum E1<T> {
+    Val(T),
+    Other(u8, u8),
+}
+fn fn5() {
+    let list_of_numbers = vec![1, 2, 3];
+    let list_of_strings = list_of_numbers
+        .iter()
+        .map(ToString::to_string) // <i32 as ToString>::to_string
+        .map(S1)
+        .map(E1::Val)
+        .collect::<Vec<_>>();
+}

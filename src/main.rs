@@ -1,11 +1,19 @@
 #![allow(unused_variables)]
 #![allow(dead_code)]
+#![feature(type_alias_impl_trait)]
+#![feature(async_closure)]
 
 mod contral_flow;
+mod fn0;
+mod futrue1;
+mod generic0;
 mod iter0;
 mod leet_code;
 mod scoping;
-mod fn0;
+mod std_ops;
+mod struct0;
+mod trait0;
+mod trait_generic;
 
 fn main() {
     fn0::test();
@@ -43,4 +51,8 @@ impl ListNode {
 fn fn1(v1: &mut Vec<i32>, v2: Vec<i32>) {
     let mut a1 = v2;
     a1.push(3);
+}
+
+fn opt(a: Option<u8>) {
+    // println!("{:?}", a);
 }
