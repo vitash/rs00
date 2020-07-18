@@ -9,6 +9,7 @@ mod futrue1;
 mod generic0;
 mod iter0;
 mod leet_code;
+mod macros;
 mod scoping;
 mod std_ops;
 mod struct0;

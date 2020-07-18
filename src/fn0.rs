@@ -67,3 +67,18 @@ fn fn5() {
         .map(E1::Val)
         .collect::<Vec<_>>();
 }
+
+trait Overload1 {
+    fn func_aaa(&self, a: u32) {}
+}
+
+trait Overload2 {
+    fn func_aaa(&self, a: &str) {}
+}
+
+impl Overload1 for u8 {}
+impl Overload2 for u8 {}
+fn overload(a: u8, xu32: u32, xstr: &str) {
+    // a.func_aaa(xu32); // 错误
+    // a.func_aaa(xstr); // 错误
+}

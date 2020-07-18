@@ -1,0 +1,10 @@
+[package]
+name = "macro1"
+version = "0.1.0"
+authors = ["vst <hwj.0_0@foxmail.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]

@@ -1,10 +1,14 @@
+[workspace]
+members = ["macro1"]
+
 [package]
 name = "rs00"
 version = "0.1.0"
-authors = ["vista.huang"]
+authors = ["vst <hwj.0_0@foxmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+macro1 = { path = "./macro1" }
 futures = { version = "0.3", default-features = false, features = ["alloc"] }
