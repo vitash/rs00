@@ -1,7 +1,6 @@
-#![allow(unused_variables)]
-#![allow(dead_code)]
-#![feature(type_alias_impl_trait)]
-#![feature(async_closure)]
+#![allow(unused_variables, dead_code)]
+// #![feature(specialization)]
+#![feature(async_closure, trace_macros, type_alias_impl_trait)]
 
 mod contral_flow;
 mod fn0;
@@ -15,6 +14,7 @@ mod std_ops;
 mod struct0;
 mod trait0;
 mod trait_generic;
+mod err0;
 
 fn main() {
     fn0::test();

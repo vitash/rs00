@@ -1,7 +1,33 @@
+#[allow(unused_macros)]
+mod proc1;
+mod exemple1;
+
+fn std_macros() {
+    println!("{}", 2);
+    stringify!(22);
+}
+
 #[test]
 fn test() {
     path1()
 }
+
+macro_rules! each_tt {
+    () => ();
+    ( $_tt:tt $($rest:tt)* ) => ( each_tt!($($rest)*));
+}
+
+fn trace_macros2() {
+    trace_macro();
+    each_tt!(aa bb); // 这里不显示，居然是按行号来的，像预编译指令
+}
+
+fn trace_macro() {
+    trace_macros!(false);
+    each_tt!(aa bb);
+}
+
+trace_macros!(false); //如果没有，会贯穿到下面的代码
 
 fn path1() {
     macro_rules! call_foo {
