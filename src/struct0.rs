@@ -16,3 +16,17 @@ fn test2() {
 //     }
 // }
 
+struct User {
+    id: u32,
+    name: String,
+}
+impl User {
+    fn new(id: u32, name: String) -> User {
+        User { id, name }
+    }
+}
+// impl std::cmp::Ord for User {
+//     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+//         self.name.cmp(other.name)   // 在 trait 里面，所有成员都可访问
+//     }
+// }

@@ -1,16 +1,19 @@
-#![allow(unused_variables)]
-#![allow(dead_code)]
-#![feature(type_alias_impl_trait)]
-#![feature(async_closure)]
+#![allow(unused_variables, dead_code)]
+// #![feature(specialization)]
+#![feature(async_closure, trace_macros, type_alias_impl_trait)]
 
 mod contral_flow;
+mod err0;
 mod fn0;
 mod futrue1;
 mod generic0;
 mod iter0;
 mod leet_code;
+mod macros;
 mod scoping;
+mod serde0;
 mod std_ops;
+mod std0;
 mod struct0;
 mod trait0;
 mod trait_generic;
@@ -53,6 +56,7 @@ fn fn1(v1: &mut Vec<i32>, v2: Vec<i32>) {
     a1.push(3);
 }
 
-fn opt(a: Option<u8>) {
-    // println!("{:?}", a);
+fn opt(a: Option<u8>, b: &u8) -> &u8 {
+    b
+    // let a = _.upwrap();
 }

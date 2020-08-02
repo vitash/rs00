@@ -1,5 +1,9 @@
-pub fn test() {
-   
+#[test]
+pub fn test1() {
+    let v1: Vec<u8> = vec![];
+    let res1 = v1.iter().find(|&&x| x == 3_u8);
+    
+    // v1.iter().max()
 }
 
 fn fn2(v1: Vec<u8>) {
@@ -16,7 +20,6 @@ fn fn2(v1: Vec<u8>) {
 
 use std::time;
 fn fn3(r1: Result<i8, ()>) {
-    
     let max_time = time::Instant::now();
     for _ in 0..1000 {
         println!("ds")
@@ -32,4 +35,10 @@ fn test_take() {
 
 fn fn4(r2: u8) -> u8 {
     r2 * 3
+}
+
+// 参数的配平艺术
+fn fn5(&&a1: &&u8, a2: &&u8) -> bool {
+    let &a22 = a2;
+    a1 == 3
 }
