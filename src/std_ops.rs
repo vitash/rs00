@@ -1,4 +1,4 @@
-use std::ops::Add;
+use std::ops::{ Add, /* Drop */ };
 
 struct A(u8, u8);
 
@@ -63,6 +63,44 @@ fn test_deref2() {
         ("", "", "") => {}
         _ => {}
     }
+}
 
+macro_rules! else_return {
+    ($opt:ident) => {
+        let $opt = match $opt {
+            Some(s) => s,
+            None => return,
+        };
+    };
+}
+fn option1(a: Option<u8>, b: Option<u8>) {
+    let a = match a {
+        Some(x) => x,
+        None => return,
+    };
+    // let b = b?;
 
+    let c = Some(3_u8);
+    else_return!(c); // 只是针对 `Option` 类型，`Result` 不管它有 `?`, `try!` 做处理
+
+    let c2 = c; // rust-analyzer，类型推断错的，实际是 u8 类型
+    assert_eq!(3_u8, c2); // u8 类型，编译正确
+}
+struct Opt1(u8);
+impl std::ops::Try for Opt1 {
+    type Ok = Self;
+    type Error = ();
+    fn from_error(v: Self::Error) -> Self {
+        Opt1(0)
+    }
+    fn from_ok(v: Self::Ok) -> Self {
+        v
+    }
+    fn into_result(self) -> Result<Self::Ok, Self::Error> {
+        Ok(self)
+    }
+}
+fn option2(a: Option<Opt1>) -> Option<()> {
+    let a = a?;
+    None
 }

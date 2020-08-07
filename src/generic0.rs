@@ -26,3 +26,5 @@ fn test_max() {
     let a = if m1 > &10 { 323 + 65 + 65 + 456 } else { 323 + 65 + 565 + 4665 + 456 };
     assert_eq!(m1, &3);
 }
+
+// fn lifetime1<T, 'a>() {} // err

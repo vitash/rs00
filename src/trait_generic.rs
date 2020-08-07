@@ -109,3 +109,6 @@ mod t3 {
         // a2.get_data(); 没有实现啊，靠
     }
 }
+
+
+use std::marker::PhantomData;
