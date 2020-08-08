@@ -2,7 +2,7 @@
 // #![feature(specialization)]
 #![feature(async_closure, trace_macros, type_alias_impl_trait)]
 #![feature(try_trait)]
-mod contral_flow;
+mod control_flow;
 mod err0;
 mod fn0;
 mod futrue1;

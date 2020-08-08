@@ -1,4 +1,5 @@
-use std::ops::{ Add, /* Drop */ };
+use std::fmt;
+use std::ops::Add;
 
 struct A(u8, u8);
 
@@ -103,4 +104,29 @@ impl std::ops::Try for Opt1 {
 fn option2(a: Option<Opt1>) -> Option<()> {
     let a = a?;
     None
+}
+
+fn result1() {
+    let r0 = Ok::<_, u8>(String::new());
+    let r1 = &r0;
+    match *r1 {
+        // 这也可以，引用类型获取所有权，然而并没有发生所有权转移
+        Ok(ref s) => (),
+        Err(e) => (), // 这个是因为拷贝了
+    };
+
+    // let r2 = *r1; // 编译错误，所有权发生了转移
+    // match r2 {
+    //     Ok(ref s) => (),
+    //     Err(e)=> (),
+    // };
+}
+
+fn double_first(vec: &[&str]) -> Option<Result<i32, std::num::ParseIntError>> {
+    vec.first().map(|first| first.parse().map(|n: i32| 2 * n))
+}
+fn test_double_first(vec: &Vec<&str>) {
+    double_first(vec);
+    double_first(&["3", "33"]);
+    // double_first(&vec.iter().skip(3));
 }
