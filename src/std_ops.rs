@@ -126,7 +126,10 @@ fn double_first(vec: &[&str]) -> Option<Result<i32, std::num::ParseIntError>> {
     vec.first().map(|first| first.parse().map(|n: i32| 2 * n))
 }
 fn test_double_first(vec: &Vec<&str>) {
-    double_first(vec);
-    double_first(&["3", "33"]);
-    // double_first(&vec.iter().skip(3));
+    double_first2(vec.iter());
+    double_first2(["3", "33"].iter());
+    double_first2(vec.iter().skip(3));
+}
+fn double_first2<'a>(mut vec: impl Iterator<Item = &'a &'a str>) -> Option<Result<i32, std::num::ParseIntError>> {
+    vec.next().map(|first| first.parse().map(|n: i32| 2 * n))
 }
