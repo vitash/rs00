@@ -1,6 +1,6 @@
 #[test]
 pub fn test1() {
-    range(3);
+    str1();
 }
 
 fn fn2(v1: Vec<u8>) {
@@ -59,3 +59,20 @@ pub fn range_float() {
     // for i in (0.1..1_f32).stey_by(0.1) {} // 不可迭代
     for c in 'a'..'s' {}
 }
+
+fn vec1() {
+    let v1 = vec![1, 3, 3, 4];
+    let v2 = &mut [&1, &3, &4];
+    v2[0] = &3;
+    assert_eq!(&[&3, &3, &4], v2);
+}
+
+fn str1() {
+    let s1 = " sd dd ".to_string();
+    let s2 = s1.trim_matches(' ');
+    assert_ne!(&*s1, s2); // s2 只是切片
+
+    let s3 = String::new();
+    let s4 = s3.trim_matches(&[' ', ','][..]);
+}
+

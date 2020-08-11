@@ -23,7 +23,7 @@ impl std::ops::Index<usize> for A {
 
 #[test]
 fn test() {
-    test_deref()
+    test_into_iter()
 }
 
 struct AA {
@@ -129,4 +129,36 @@ fn test_double_first(vec: &Vec<&str>) {
     double_first(vec);
     double_first(&["3", "33"]);
     // double_first(&vec.iter().skip(3));
+}
+
+fn res_iter() {
+    let a = Ok::<_, u32>(3);
+    let it = &mut a.iter();
+    assert_eq!(Some(&3), it.next());
+    assert_eq!(None, it.next());
+
+    let it = a.iter();
+    let it2 = it.into_iter();
+    let take = it2.take(3);
+}
+
+fn res_collect1() {
+    let strings = vec!["1", "tofu", "93", "18"];
+    let numbers = strings
+        .iter()
+        .map(|s| s.parse::<i32>())
+        .collect::<Result<Vec<i32>, _>>();
+    println!("Results: {:?}", numbers);
+
+}
+
+fn test_into_iter() {
+    let strings = vec!["1", "tofu", "93", "18"];
+    let iter = &mut strings.iter();
+    let new_iter = iter.into_iter(); // &mut 怎么还能调用，因为实现了...哈哈
+    let a = iter.next(); 
+    assert_eq!(Some(&"tofu"), iter.next());
+    // new_iter 也是 &mut 类型，而且生命周期也是一样的
+    // 卧槽，发现了什么东西，可以同时拥有两个 &mut 绑定，再看下一行
+    // assert_eq!(Some(&"93"), new_iter.next());  // 想多了， &mut 也是有所有权的，
 }

@@ -14,6 +14,7 @@ mod macros;
 mod scoping;
 mod serde0;
 mod std0;
+mod std_lib;
 mod std_ops;
 mod struct0;
 mod trait0;
