@@ -126,9 +126,12 @@ fn double_first(vec: &[&str]) -> Option<Result<i32, std::num::ParseIntError>> {
     vec.first().map(|first| first.parse().map(|n: i32| 2 * n))
 }
 fn test_double_first(vec: &Vec<&str>) {
-    double_first(vec);
-    double_first(&["3", "33"]);
-    // double_first(&vec.iter().skip(3));
+    double_first2(vec.iter());
+    double_first2(["3", "33"].iter());
+    double_first2(vec.iter().skip(3));
+}
+fn double_first2<'a>(mut vec: impl Iterator<Item = &'a &'a str>) -> Option<Result<i32, std::num::ParseIntError>> {
+    vec.next().map(|first| first.parse().map(|n: i32| 2 * n))
 }
 
 fn res_iter() {
@@ -144,19 +147,15 @@ fn res_iter() {
 
 fn res_collect1() {
     let strings = vec!["1", "tofu", "93", "18"];
-    let numbers = strings
-        .iter()
-        .map(|s| s.parse::<i32>())
-        .collect::<Result<Vec<i32>, _>>();
+    let numbers = strings.iter().map(|s| s.parse::<i32>()).collect::<Result<Vec<i32>, _>>();
     println!("Results: {:?}", numbers);
-
 }
 
 fn test_into_iter() {
     let strings = vec!["1", "tofu", "93", "18"];
     let iter = &mut strings.iter();
     let new_iter = iter.into_iter(); // &mut 怎么还能调用，因为实现了...哈哈
-    let a = iter.next(); 
+    let a = iter.next();
     assert_eq!(Some(&"tofu"), iter.next());
     // new_iter 也是 &mut 类型，而且生命周期也是一样的
     // 卧槽，发现了什么东西，可以同时拥有两个 &mut 绑定，再看下一行
