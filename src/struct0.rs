@@ -1,12 +1,17 @@
 struct SA1;
 struct SA2();
+enum EA1 {} // 不同于上面的两个结构体，这个甚至不可被构造出来
 
 fn test1(a: &SA1, a2: &SA2) {}
 fn test2() {
-    test1(&SA1, &SA2())
+    test1(&SA1, &SA2());
+    test3(SA2);
+    // test3(SA1); 无法当做一个函数传递
 }
+fn test3<T>(f: fn() -> T) {}
 
 // fn hm1(h1: &mut std::collections::HashMap<u8, String>) -> &String {
+//     // h1.entry(&22).or_insert("dsd")
 //     match h1.get(&22) {
 //         Some(v) => v,
 //         None => {

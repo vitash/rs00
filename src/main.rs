@@ -4,6 +4,7 @@
 #![feature(try_trait)]
 mod control_flow;
 mod err0;
+mod file0;
 mod fn0;
 mod futrue1;
 mod generic0;
@@ -17,6 +18,7 @@ mod std0;
 mod std_lib;
 mod std_ops;
 mod struct0;
+mod thread0;
 mod trait0;
 mod trait_generic;
 

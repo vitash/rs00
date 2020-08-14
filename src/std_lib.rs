@@ -29,3 +29,24 @@ fn hashset1() {
     let a: Option<&i32> = it1.next();
     let a: Option<i32> = it1.cloned().next();
 }
+
+use std::mem::transmute;
+use std::mem::size_of;
+
+fn main() {
+
+    println!("{:?}", size_of::<&[i32; 3]>());
+    println!("{:?}", size_of::<&[i32]>());
+
+    let v : [i32; 5] = [1,2,3,4,5];
+    let p : &[i32] = &v[2..4];
+    unsafe {
+        let (ptr, len) : (usize, isize) = transmute(p);
+        println!("{} {}", ptr, len);
+
+        let ptr = ptr as *const i32;
+        for i in 0..len {
+            println!("{}", *ptr.offset(i));
+        }
+    }
+}

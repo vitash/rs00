@@ -1,6 +1,8 @@
 use std::fmt;
 use std::ops::Add;
+use std::marker;
 
+// type NeverErr<T> = Result<T, !>;
 struct A(u8, u8);
 
 impl Add<u8> for A {
@@ -126,13 +128,16 @@ fn double_first(vec: &[&str]) -> Option<Result<i32, std::num::ParseIntError>> {
     vec.first().map(|first| first.parse().map(|n: i32| 2 * n))
 }
 fn test_double_first(vec: &Vec<&str>) {
-    double_first2(vec.iter());
-    double_first2(["3", "33"].iter());
-    double_first2(vec.iter().skip(3));
+    // double_first3(&vec);
+    // double_first3(&["3", "33"]); // 无法实现，参考 use std::process::Command::args
+    // double_first3(&vec.iter().skip(3));
 }
 fn double_first2<'a>(mut vec: impl Iterator<Item = &'a &'a str>) -> Option<Result<i32, std::num::ParseIntError>> {
     vec.next().map(|first| first.parse().map(|n: i32| 2 * n))
 }
+// fn double_first3<T: AsRef<str>>(vec: &impl IntoIterator<Item = &'a T>) -> Option<Result<i32, std::num::ParseIntError>> {
+//     vec.into_iter().next().map(|first| first.as_ref().parse().map(|n: i32| 2 * n))
+// }
 
 fn res_iter() {
     let a = Ok::<_, u32>(3);
