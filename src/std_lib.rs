@@ -1,5 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use std::slice::Iter;
+use std::any::Any;
 
 #[test]
 fn test() {
@@ -50,3 +51,8 @@ fn main() {
         }
     }
 }
+
+// struct Any1;
+// fn test_any1() -> Box<Any> {
+//     3 as Box<Any>
+// }

@@ -3,7 +3,7 @@ use std::mem::transmute;
 
 #[test]
 fn test() {
-    pointer1()
+    sizeof()
 }
 fn float_max() {
     let max = 0.3_f32.max(f32::NAN);
@@ -34,6 +34,18 @@ fn sizeof() {
 
     assert_eq!(16, size_of::<&[u8]>()); // 16, 索引开始和结束
     assert_eq!(24, size_of::<Vec<u8>>()); // RawVec，len
+
+    enum EA1 {
+        A(u64, u64, u64),
+        B(u8),
+    }
+    assert_eq!(32, size_of::<EA1>());
+    enum EA2 {
+        A(u8),
+        B(u8),
+    }
+    assert_eq!(2, size_of::<EA2>());
+
 }
 
 fn pointer1() {

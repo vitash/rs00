@@ -9,6 +9,7 @@ mod fn0;
 mod futrue1;
 mod generic0;
 mod iter0;
+mod jpgz;
 mod leet_code;
 mod lifetime0;
 mod macros;

@@ -82,3 +82,27 @@ fn overload(a: u8, xu32: u32, xstr: &str) {
     // a.func_aaa(xu32); // 错误
     // a.func_aaa(xstr); // 错误
 }
+
+fn as_str<T: Into<String>>(s1: T) {
+    let s = s1.into();
+    println!("{:?}", &s);
+}
+
+fn as_str2(s1: impl Into<String>) {
+    let mut s = s1.into();
+    s += " sss";
+    println!("{:?}", &s);
+}
+
+fn test_as_str() {
+    as_str2("ds");
+    as_str2(String::new());
+}
+
+fn into_s1(s1: impl Into<S1>) {
+    let s = s1.into();
+    println!("{:?}", &s.0);
+}
+fn test_into_s1() {
+    into_s1(S1(String::new())); // 他没有实现，但是还是能调用，是编译器实现了还是，编译过后优化掉了
+}

@@ -35,3 +35,4 @@ impl User {
 //         self.name.cmp(other.name)   // 在 trait 里面，所有成员都可访问
 //     }
 // }
+

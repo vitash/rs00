@@ -14,3 +14,7 @@ macro1 = { path = "./macro1" }
 futures = { version = "0.3", default-features = false, features = ["alloc"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+
+[[test]]
+name = "test1"
+path = "tests/test1.rs"

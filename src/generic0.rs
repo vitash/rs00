@@ -29,9 +29,11 @@ fn test_max() {
 
 // fn lifetime1<T, 'a>() {} // err
 
-struct LifeTiem<'a>(&'a str);
-struct LifeTiem2<'a, T>(&'a str, T);
-fn lifetime2(a1: LifeTiem2<'_, u32>) {
-    let a: LifeTiem = LifeTiem(a1.0); // 生命周期声明可以省略, 泛型参数不可以省略
+struct LifeTime<'a>(&'a str);
+struct LifeTime2<'a, T>(&'a str, T);
+// a1 生命周期声明可以省略, 泛型参数不可以省略
+fn lifetime2(a1: LifeTime2<'_, u32>, a2: LifeTime2<u32>) {
+    let a: LifeTime = LifeTime(a1.0); 
+    /* 所以为什么生命周期参数必须要放在类型参数的前面 */
 }
 

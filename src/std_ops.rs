@@ -124,6 +124,19 @@ fn result1() {
     // };
 }
 
+fn result_u8(a1: Result<u8, u32>) {
+    let mut v1 = vec![];
+    let _ = a1.map(|ref x| v1.push(x.clone()));
+    let _ = a1.map(|x| v1.push(x)); 
+    // a1 居然可以使用两次，因为 Result 实现了 Copy，且 <T = u8, E = u32> 也都实现了 Copy
+}
+
+fn result_string(a1: Result<String, u32>) {
+    let mut v1 = vec![];
+    let _ = a1.map(|ref x| v1.push(x.clone()));
+    // let _ = a1.map(|x| v1.push(x));
+}
+
 fn double_first(vec: &[&str]) -> Option<Result<i32, std::num::ParseIntError>> {
     vec.first().map(|first| first.parse().map(|n: i32| 2 * n))
 }
