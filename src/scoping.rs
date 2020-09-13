@@ -8,7 +8,7 @@ struct Point {
 
 #[test]
 pub fn test() {
-    ref_cell1();
+    cell3();
 }
 
 struct Box1<T>(T);
@@ -410,8 +410,28 @@ impl<T> Cell1<T> {
             let p = &self.0 as *const T as *mut T;
             *p = val;
         }
+        // 就算这么实现也是不安全的，set 参数传入时是协变的，但它不应该是协变的，应该是不可变的。
+        // https://zhuanlan.zhihu.com/p/22243054
+
+        // let a = Cell::<impl Debug>(3_u8); // 很显然结构体是不能有继承关系的，但是生命周期可以
+        // 长的生命周期可以传递给短的生命周期
     }
+    // fn evil<'long: 'short,'short>(t: &Cell1<'long>, s: &'short isize) {
+    //     // The following assignment is not legal, 
+    //     // but it escapes from lifetime checking
+    //     let u: &Table<'short> = t;
+    //     u.cell.set(s);
+    // }
 }
+
+fn cell3() {
+    let a = Cell1(Some(3_u8));
+    let a1 = &a;
+    a.set(None);
+    println!("{:?}, {:?}", a1.0, a.0);
+    assert_eq!(a1.0, a.0);
+}
+
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -452,7 +472,7 @@ mod node2 {
     use std::rc::Rc;
     use std::cell::RefCell;
     struct Node {
-        next : Option<Rc<RefCell<Node>>>
+        next : Option<Rc<RefCell<Node>>>    // Rc 是分配在堆上的
     }
 
     fn ref_cell2() {
@@ -491,4 +511,61 @@ fn cell2() {
     data = [10];
     // println!("{:?}", unsafe { *p }); // p 应该还是有效的地址，我想看一下值，但是我写不出来。。。
     println!("{:?}", data);
+}
+
+fn rc1(v1: Rc<Vec<u8>>, v2: Rc<RefCell<Vec<u8>>>) {
+    // v1.clear(); // trait `DerefMut` 
+    v2.borrow_mut().clear();
+}
+
+fn ref_cell2() {
+    let v1 = RefCell::new(vec![1, 2]);
+    let mut v2 = v1.borrow_mut();
+    let v3 = &v1;   // 内部可变性，引用没有失效
+    v2.push(20);
+    drop(v2);
+    v1.borrow_mut().push(30);
+    println!("{:?}, {:?}", v3, v1);
+}
+
+struct S1<'a> {
+    a: &'a u8,
+    // b: &impl Debug, // Rust 不允许这么做
+}
+
+fn life2<'long: 'short, 'short>(s1: &mut S1<'long>, a1: &'short u8, a2: &'long u8) {
+    let s2: &S1<'short> = s1; // 可以协变，因为是只读的
+    // let s2: &mut S1<'short> = s1; // err 增加了可写状态，就不能协变了
+    // 正是因为 Cell 是内部可变性的，所以不用 &mut 它的 set 方法便可在内部改写属性了，现在 Rust 的实现是安全的，
+}
+
+mod node4 {
+    struct Node<'n> {
+        next: Option<&'n mut Node<'n>>
+    }
+    impl Node<'_> {
+        fn none<'n>() -> Node<'n> {
+            Node { next: None }
+        }
+    }
+    fn test() {
+        let mut a = Node::none();
+        let mut b = Node::none();
+        a.next = Some(&mut b); // &mut 转移了，前面的引用失效了
+        // b.next = Some(&a); //
+        // 链表没那么简单，太难了。。
+    }
+}
+
+fn mut_option() {
+    let mut op1 = Some(vec![3_u8]);
+    if let Some(v) = &mut op1 {
+        v.push(2);
+    }
+    op1.as_mut().unwrap().push(4);
+    op1.as_mut().unwrap().push(4);
+}
+
+fn mut_option2(op1: Option<&mut Vec<u8>>) {
+    op1.unwrap().push(2);
 }

@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 struct SA1;
 struct SA2();
 enum EA1 {} // 不同于上面的两个结构体，这个甚至不可被构造出来
@@ -36,3 +38,11 @@ impl User {
 //     }
 // }
 
+// struct Mi<T>; // err
+// parameter `T` is never used
+// consider removing `T`, referring to it in a field, or using a marker such as `std::marker::PhantomData`
+
+struct PhantomTuple<A, B>(A, PhantomData<B>);
+fn phantom_data1() {
+    let a = PhantomTuple(3_u8, PhantomData::<i32>);
+}

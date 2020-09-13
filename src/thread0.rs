@@ -1,6 +1,7 @@
 use std::sync::mpsc::{self, Receiver, Sender};
 use std::thread::{self, JoinHandle};
 use std::process::Command;
+use std::future::Future;
 
 #[test]
 fn test() {

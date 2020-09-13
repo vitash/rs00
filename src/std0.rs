@@ -3,7 +3,7 @@ use std::mem::transmute;
 
 #[test]
 fn test() {
-    sizeof()
+    sizeof2()
 }
 fn float_max() {
     let max = 0.3_f32.max(f32::NAN);
@@ -46,6 +46,10 @@ fn sizeof() {
     }
     assert_eq!(2, size_of::<EA2>());
 
+}
+
+fn sizeof2() {
+    assert_eq!(1, size_of::<Option<()>>());
 }
 
 fn pointer1() {
