@@ -1,6 +1,6 @@
 use std::fmt;
-use std::ops::Add;
 use std::marker;
+use std::ops::Add;
 
 // type NeverErr<T> = Result<T, !>;
 struct A(u8, u8);
@@ -38,19 +38,19 @@ impl AA {
     }
 }
 struct AA2 {
-    a: AA,
+    a: Vec<AA>,
     b: u32,
 }
 impl std::ops::Deref for AA2 {
-    type Target = AA;
+    type Target = Vec<AA>;
     fn deref(&self) -> &Self::Target {
         &self.a
     }
 }
 
 fn test_deref() {
-    let a2 = AA2 { a: AA { aa: 33 }, b: 30 };
-    assert_eq!(33, a2.get_aa())
+    let a2 = AA2 { a: vec![AA { aa: 33 }], b: 30 };
+    let item1 = &a2[1]; // 索引和方法也是可以的
 }
 fn test_deref2() {
     use std::rc::Rc;
@@ -107,6 +107,9 @@ fn option2(a: Option<Opt1>) -> Option<()> {
     let a = a?;
     None
 }
+fn option3(a: Option<String>) {
+    a.unwrap_or_default();
+}
 
 fn result1() {
     let r0 = Ok::<_, u8>(String::new());
@@ -127,7 +130,7 @@ fn result1() {
 fn result_u8(a1: Result<u8, u32>) {
     let mut v1 = vec![];
     let _ = a1.map(|ref x| v1.push(x.clone()));
-    let _ = a1.map(|x| v1.push(x)); 
+    let _ = a1.map(|x| v1.push(x));
     // a1 居然可以使用两次，因为 Result 实现了 Copy，且 <T = u8, E = u32> 也都实现了 Copy
 }
 

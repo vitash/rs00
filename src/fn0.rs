@@ -55,9 +55,20 @@ fn closure3(p1: Point) {
 
 struct S1(String); // 这个也可以做函数指针
 enum E1<T> {
+    V1,
+    V2(),
     Val(T),
     Other(u8, u8),
 }
+fn fn6() {
+    fn fn61<T>(f1: fn() -> T) -> T {
+        return f1();
+    }
+    let a = fn61(E1::V2::<u8>);
+    // let a = fn61(E1::<u8>::V1);
+    let a = E1::Other::<u8>;
+}
+
 fn fn5() {
     let list_of_numbers = vec![1, 2, 3];
     let list_of_strings = list_of_numbers
@@ -105,4 +116,15 @@ fn into_s1(s1: impl Into<S1>) {
 }
 fn test_into_s1() {
     into_s1(S1(String::new())); // 他没有实现，但是还是能调用，是编译器实现了还是，编译过后优化掉了
+}
+
+pub enum PatternA {
+    X(Vec<u8>, u8)
+}
+
+pub fn pattern_fn1<'a>(PatternA::X(a, b): &'a mut PatternA, v: Vec<u8>) {
+    // let a2 = &a;
+    // *a2 = &mut v;
+    *a = v;
+    a.push(3);
 }

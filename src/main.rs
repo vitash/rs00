@@ -2,19 +2,21 @@
 // #![feature(specialization)]
 #![feature(async_closure, trace_macros, type_alias_impl_trait)]
 #![feature(try_trait)]
+#![feature(label_break_value)]
 mod control_flow;
 mod err0;
 mod file0;
 mod fn0;
 mod futrue1;
-mod generic0;
+pub mod generic0;
 mod iter0;
 mod jpgz;
 mod leet_code;
 mod lifetime0;
+mod lib00;
 mod macros;
+mod codewars;
 mod scoping;
-mod serde0;
 mod std0;
 mod std_lib;
 mod std_ops;
@@ -24,7 +26,8 @@ mod trait0;
 mod trait_generic;
 
 fn main() {
-    fn0::test();
+    // fn0::test();
+    lifetime0::struct_move::test2();
     let a = 3;
     let b = "ds";
     println!("__________________________________________");

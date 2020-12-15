@@ -1,6 +1,7 @@
+
 #[test]
 fn test() {
-    struct1();
+    struct_move::test2();
 }
 struct A<'a>(&'a str);
 
@@ -18,4 +19,73 @@ fn struct2() -> u8 {
         A(s)
     } // 这个没有返回值，这个是语句
     3_u8
+}
+
+fn fn_ref1(ref a: String) {
+    if let Some(b) = &Some(1) {}
+    if let Some(ref b) = &Some(1) {}
+}
+fn fn_ref2() {
+    let a = "".to_string();
+    fn_ref1(a); // fn_ref1 需要的参数还是 String, 只不过它的内部匹配进行解引用
+                // let b = a.to_string(); // err
+}
+
+pub mod struct_move {
+    #[derive(Debug)]
+    struct A(u8);
+    impl Drop for A {
+        fn drop(&mut self) {
+            println!("{:?}", self);
+        }
+    }
+    fn test(a: A) -> A {
+        // a.0 += 1;
+        println!("{:p}", &a);
+        a
+    }
+    pub fn test2() {
+        let a = A(0);
+        println!("{:p}", &a);
+
+        let mut a = a;
+        a.0 += 1;
+        println!("{:p}", &a);
+
+        let a2 = test(a);
+        println!("{:p}", &a2);
+    }
+}
+
+pub mod mut0 {
+    fn fn1(s: &mut String) {}
+    fn fn2() {
+        let mut s = "".to_string();
+        let s1 = &mut s;
+        fn1(s1); // s1 没有失效
+        s1.len();
+        {
+            let s2: &mut String = s1; // s2 的生命周期只是当前作用域？
+        }
+        s1.len(); // s1 没有失效
+        {
+            let s2 = s1; // s1 的生命周期直接给了 s2 ？
+        }
+        // s1.len(); // s1 失效了
+    }
+    #[derive(Debug)]
+    struct NumRef<'a>(&'a i32);
+
+    impl<'a> NumRef<'a> {
+        // my struct is generic over 'a so that means I need to annotate
+        // my self parameters with 'a too, right? (answer: no, not right)
+        fn some_method(&'a mut self) {}
+    }
+
+    fn main() {
+        let mut num_ref = NumRef(&5);
+        num_ref.some_method(); // mutably borrows num_ref for the rest of its lifetime
+        // num_ref.some_method(); // compile error
+        // println!("{:?}", &num_ref); // also compile error
+    }
 }

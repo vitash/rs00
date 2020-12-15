@@ -2,6 +2,8 @@ use std::collections::{HashMap, HashSet};
 use std::slice::Iter;
 use std::any::Any;
 
+mod str0;
+
 #[test]
 fn test() {
     hashmap1();

@@ -1,3 +1,8 @@
+mod associated_type;
+mod hkt1;
+mod te_hx_1;
+mod te_hx_11;
+
 trait Trait1 {
     type O1; // 关联类型
     fn fn1() -> Self::O1;
@@ -110,5 +115,68 @@ mod t3 {
     }
 }
 
-
 use std::marker::PhantomData;
+
+trait Post<T> {
+    const URL: &'static str;
+    fn send();
+}
+
+#[allow(non_camel_case_types)]
+struct get_aa;
+#[warn(non_camel_case_types)]
+impl Post<u8> for get_aa {
+    const URL: &'static str = "sd";
+    fn send() {}
+}
+
+// struct get_abb;
+fn test_post1() {
+    let a = get_aa;
+    // let u = <a as Post<u8>>::URL;
+    let u = <get_aa as Post<u8>>::URL;
+    get_aa::send();
+}
+
+// fn returns_closure() -> Fn(i32) -> i32 {
+//     |x| x + 1
+// }
+
+// fn test22(s: &mut String, m1: &mut MutA) {
+//     let a: &String = s;
+//     let a2 = &m1.a;
+// }
+
+fn test23(m1: &MutA) {
+    m1.to_string();
+}
+fn test24(m1: &mut MutA, m2: &mut MutA) {
+    test23(m1);
+    m2.to_string();
+    (&*m2).to_string();
+}
+
+struct MutA {}
+
+impl ToString for &MutA {
+    fn to_string(&self) -> String {
+        todo!()
+    }
+}
+
+impl ToString for &mut MutA {
+    fn to_string(&self) -> String {
+        todo!()
+    }
+}
+
+mod t_impl {
+    use crate::generic0::AA1;
+    // use crate::generic0::AA2;
+
+    struct S1;
+    impl AA1 for S1 {}
+    fn test2() {
+        // S1::fn_aa2();
+    }
+}

@@ -1,3 +1,10 @@
+pub trait AA1 {}
+pub trait AA2 {
+    fn fn_aa2() {}
+}
+
+impl<T: AA1> AA2 for T {}
+
 fn max<T: std::cmp::PartialOrd<T>>(s: &[T]) -> &T {
     let mut m = &s[0];
     for x in s.iter() {
