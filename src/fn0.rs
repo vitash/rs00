@@ -119,7 +119,7 @@ fn test_into_s1() {
 }
 
 pub enum PatternA {
-    X(Vec<u8>, u8)
+    X(Vec<u8>, u8),
 }
 
 pub fn pattern_fn1<'a>(PatternA::X(a, b): &'a mut PatternA, v: Vec<u8>) {
@@ -127,4 +127,19 @@ pub fn pattern_fn1<'a>(PatternA::X(a, b): &'a mut PatternA, v: Vec<u8>) {
     // *a2 = &mut v;
     *a = v;
     a.push(3);
+}
+
+#[test]
+fn move_num() {
+    let mut num = 5;
+    {
+        // 把 num(5) 所有权给 move 到了 add_num 中，
+        // 使用其成为闭包中的局部变量。
+        let mut add_num = move |x: i32| num += x;
+        add_num(5);
+        println!("num(move)={}", num); //输出10
+
+        // 此段代码抄自陈皓的博客，上面的输出并非是 10， 而是 5
+        // https://coolshell.cn/articles/20845.html/comment-page-1#%E5%87%BD%E6%95%B0%E9%97%AD%E5%8C%85
+    }
 }

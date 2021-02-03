@@ -1,4 +1,3 @@
-
 #[test]
 fn test() {
     struct_move::test2();
@@ -85,7 +84,27 @@ pub mod mut0 {
     fn main() {
         let mut num_ref = NumRef(&5);
         num_ref.some_method(); // mutably borrows num_ref for the rest of its lifetime
-        // num_ref.some_method(); // compile error
-        // println!("{:?}", &num_ref); // also compile error
+                               // num_ref.some_method(); // compile error
+                               // println!("{:?}", &num_ref); // also compile error
+    }
+}
+
+mod m1 {
+    struct Buffer {
+        buffer: String,
+    }
+    struct Render {
+        current_buffer: Buffer,
+        next_buffer: Buffer,
+    }
+    //实现结构体 `Render` 的方法
+    impl Render {
+        //实现 update_buffer() 方法，
+        //更新buffer，把 next 更新到 current 中，再更新 next
+        fn update_buffer(&mut self, buf: String) {
+            // let n = ;
+            // self.current_buffer = self.next_buffer;
+            // self.next_buffer = Buffer { buffer: buf };
+        }
     }
 }

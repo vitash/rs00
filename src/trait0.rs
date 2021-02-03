@@ -58,3 +58,31 @@ impl Animal for Dog {
 fn test_dog1() {
     assert_eq!(Dog::baby_name(), <Dog as Animal>::baby_name())
 }
+
+mod m1 {
+    trait TA {
+        fn fn_a() -> u8;
+    }
+
+    trait TB: TA {
+        // 想为 TA 的 fn_a 做默认实现，这是 Rust 无法办到的
+        fn fn_a() -> u8 {
+            3
+        }
+        fn fn_b();
+    }
+
+    struct S1;
+    //// 必须分开实现 trait
+    // impl TA for S1 {}
+    // impl TB for S1 {
+    //     fn fn_b() {}
+    // }
+
+    // 本末倒置，某结构体实现 TB 必先实现 TA，用泛型特化做如此的实现无异于放屁
+    impl<T: TB> TA for T {
+        fn fn_a() -> u8 {
+            3
+        }
+    }
+}

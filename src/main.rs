@@ -3,6 +3,7 @@
 #![feature(async_closure, trace_macros, type_alias_impl_trait)]
 #![feature(try_trait)]
 #![feature(label_break_value)]
+mod codewars;
 mod control_flow;
 mod err0;
 mod file0;
@@ -12,10 +13,9 @@ pub mod generic0;
 mod iter0;
 mod jpgz;
 mod leet_code;
-mod lifetime0;
 mod lib00;
+mod lifetime0;
 mod macros;
-mod codewars;
 mod scoping;
 mod std0;
 mod std_lib;
