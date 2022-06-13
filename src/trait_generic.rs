@@ -8,12 +8,12 @@ trait Trait1 {
     fn fn1() -> Self::O1;
 }
 
-impl Trait1 for u8 {
-    type O1 = impl std::cmp::Ord; // #![feature(type_alias_impl_trait)]
-    fn fn1() -> Self::O1 {
-        3 // type O1 = impl std::cmp::Ord; // 这个应该是没用的，因为只能实现 Trait1 一次，返回值已经确定了
-    }
-}
+// impl Trait1 for u8 {
+//     type O1 = impl std::cmp::Ord; // #![feature(type_alias_impl_trait)]
+//     fn fn1() -> Self::O1 {
+//         3 // type O1 = impl std::cmp::Ord; // 这个应该是没用的，因为只能实现 Trait1 一次，返回值已经确定了
+//     }
+// }
 
 // impl Trait1 for u8
 // where // 这个约束是不允许约束的

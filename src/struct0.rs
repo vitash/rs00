@@ -2,6 +2,7 @@ use std::marker::PhantomData;
 
 struct SA1;
 struct SA2();
+struct SA3 {}
 enum EA1 {} // 不同于上面的两个结构体，这个甚至不可被构造出来
 
 fn test1(a: &SA1, a2: &SA2) {}
@@ -9,6 +10,7 @@ fn test2() {
     test1(&SA1, &SA2());
     test3(SA2);
     // test3(SA1); 无法当做一个函数传递
+    // test3(SA3); 无法当做一个函数传递
 }
 fn test3<T>(f: fn() -> T) {}
 
@@ -45,4 +47,21 @@ impl User {
 struct PhantomTuple<A, B>(A, PhantomData<B>);
 fn phantom_data1() {
     let a = PhantomTuple(3_u8, PhantomData::<i32>);
+}
+
+fn pattern_dest() {
+    struct Color(i32, i32, i32);
+    struct Point3d {
+        x: i32,
+        y: i32,
+        z: i32,
+    }
+
+    let c1 = Color(1, 2, 3);
+    // let c2 = Color(1, ..c1);
+    // let c3 = Color(..c1);
+
+    let origin = Point3d { x: 0, y: 0, z: 0 };
+
+    let point = Point3d { z: 1, x: 2, ..origin };
 }

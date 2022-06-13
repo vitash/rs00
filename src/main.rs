@@ -1,8 +1,10 @@
 #![allow(unused_variables, dead_code, unused_imports)]
 // #![feature(specialization)]
 #![feature(async_closure, trace_macros, type_alias_impl_trait)]
-#![feature(try_trait)]
+// #![feature(try_trait)]
 #![feature(label_break_value)]
+
+use std::io::Read;
 mod codewars;
 mod control_flow;
 mod err0;
@@ -67,4 +69,18 @@ fn fn1(v1: &mut Vec<i32>, v2: Vec<i32>) {
 fn opt(a: Option<u8>, b: &u8) -> &u8 {
     b
     // let a = _.upwrap();
+}
+
+#[test]
+fn test_stdin() {
+    let line = &mut String::new();
+    std::io::stdin().read_line(line).unwrap();
+    println!("{line}, {}, {:?}", line.len(), line.as_bytes()); // 会多出 \r\n
+    println!("num: {:?}", line.trim().parse::<i32>()); // parse 不能有空白符
+    let num = line.trim().parse::<i32>().map(|x| x.cmp(&2));
+    std::io::stdin().read_line(line).expect("msg"); // 会拼接在后面
+    println!("{line}, {}, {:?}", line.len(), line.as_bytes());
+    // line.trim()
+    _ = std::any::type_name::<u32>();
+    // let val: u64 = "2930482035982309".parse().unwrap();
 }

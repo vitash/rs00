@@ -90,19 +90,19 @@ fn option1(a: Option<u8>, b: Option<u8>) {
     assert_eq!(3_u8, c2); // u8 类型，编译正确
 }
 struct Opt1(u8);
-impl std::ops::Try for Opt1 {
-    type Ok = Self;
-    type Error = ();
-    fn from_error(v: Self::Error) -> Self {
-        Opt1(0)
-    }
-    fn from_ok(v: Self::Ok) -> Self {
-        v
-    }
-    fn into_result(self) -> Result<Self::Ok, Self::Error> {
-        Ok(self)
-    }
-}
+// impl std::ops::Try for Opt1 {
+//     type Ok = Self;
+//     type Error = ();
+//     fn from_error(v: Self::Error) -> Self {
+//         Opt1(0)
+//     }
+//     fn from_ok(v: Self::Ok) -> Self {
+//         v
+//     }
+//     fn into_result(self) -> Result<Self::Ok, Self::Error> {
+//         Ok(self)
+//     }
+// }
 fn option2(a: Option<Opt1>) -> Option<()> {
     let a = a?;
     None

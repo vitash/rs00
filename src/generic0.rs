@@ -19,7 +19,7 @@ fn type1() {
     enum E1<T> {
         O1(T),
         Err,
-    };
+    }
     use E1::O1;
 
     let r1 = Ok::<u8, u32>(3);

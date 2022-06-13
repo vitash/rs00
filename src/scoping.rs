@@ -385,6 +385,14 @@ fn mut62() {
     // 要限定就应该限定类型可变性，如果一个操作导致类型会发生改变，就应该使得前面的引用失效，如果只是普通的内容替换，这个可变操作是允许的
 }
 
+fn mut7() {
+    let v = [10i32, 20, 30, 40, 50];
+    let index = std::env::args().nth(1).map(|x| x.parse().unwrap_or(0)).unwrap_or(0);
+    let args = std::env::args(); // 上面调用 nth 可以自动转为 mut Args，下面却不行，这个是绑定
+    // let index = args.nth(1).map(|x| x.parse().unwrap_or(0)).unwrap_or(0);
+    println!("{:? }", v[index]);
+}
+
 use std::cell::Cell;
 
 fn cell1() {

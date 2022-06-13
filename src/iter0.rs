@@ -23,6 +23,12 @@ fn fn3(r1: Result<i8, ()>) {
     }
 }
 
+fn fn4() {
+    let it1 = 1..3;
+    let (a1, b1): (Vec<i32>, Vec<i32>) = it1.partition(|&x| x > 2);
+    
+}
+
 #[test]
 fn test_take() {
     let v1 = vec![1];
@@ -75,4 +81,3 @@ fn str1() {
     let s3 = String::new();
     let s4 = s3.trim_matches(&[' ', ','][..]);
 }
-
