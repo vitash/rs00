@@ -108,3 +108,21 @@ mod m1 {
         }
     }
 }
+
+mod nll {
+    #[test]
+    fn test14_2_example1() {
+        let v1 = &mut vec![1, 2, 3];
+        v1.push(v1.len());
+    }
+
+    #[test]
+    fn test14_2_example2() {
+        let v1 = &mut vec![0, 1, 2, 3];
+        let mut p1 = &mut v1[0];
+        println!("{p1}");
+        v1.push(4); // p1 is dead
+        p1 = &mut v1[2]; // p1 is live again
+        println!("{p1}");
+    }
+}
