@@ -59,8 +59,8 @@ impl T1 for S1 {
 mod enum0 {
     use serde::{Deserialize, Serialize};
 
-    #[serde(untagged)] // 对于结构体不加的话会是一个对象
     #[derive(Debug, Serialize, Deserialize)]
+    #[serde(untagged)] // 对于结构体不加的话会是一个对象
     enum Pos {
         Left,
         Right,
@@ -75,15 +75,18 @@ mod enum0 {
     }
 
     pub fn test() {
-        let res = &serde_json::from_str::<A1>(r#"{"pos": undefined}"#).unwrap();
+        let res = &serde_json::from_str::<A1>(r#"{"pos": null}"#).unwrap();
         println!("{:?}", res);
-        let res = &serde_json::from_str::<A1>(r#"{"pos": [1, 2]}"#).unwrap();
+        let res = &mut serde_json::from_str::<A1>(r#"{"pos": [1, 2]}"#).unwrap();
+        println!("{:?}", res);
+        res.pos = Some(Pos::Left);
         println!("{:?}", res);
         // let res = &A1{pos: Some(Pos::XY(1, 2))};
         let json = &serde_json::to_string(res).unwrap();
         println!("{:?}", json);
     }
 }
+
 #[test]
 fn test() {
     enum0::test();

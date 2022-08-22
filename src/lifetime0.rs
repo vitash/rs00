@@ -126,3 +126,15 @@ mod nll {
         println!("{p1}");
     }
 }
+
+#[test]
+fn test_tup1() {
+    let mut a = 1;
+    let refa = &mut a;
+    let t1 = &mut (refa, &2);
+    let (x, y) = t1;
+    // *t1.0 += 2;
+    **x += 2;
+
+    println!("{x:?}");
+}

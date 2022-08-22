@@ -1,4 +1,4 @@
-#![allow(unused_variables, dead_code, unused_imports)]
+#![allow(unused_variables, dead_code, unused_imports, unused_must_use, deprecated)]
 // #![feature(specialization)]
 #![feature(async_closure, trace_macros, type_alias_impl_trait)]
 // #![feature(try_trait)]
@@ -27,6 +27,7 @@ mod struct0;
 mod thread0;
 mod trait0;
 mod trait_generic;
+mod unsafe0;
 
 fn main() {
     // fn0::test();

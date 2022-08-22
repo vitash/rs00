@@ -107,7 +107,7 @@ fn mut_struct() {
     aa.push_str("ds");
     a2.a.push_str(" ds ");// aa 失效了，只能有一个可变引用
     // aa.push_str(" ds "); // err
-    
+
     let aa = &a2.a;
     let bb = &a2.b;
     bb.len();
@@ -212,7 +212,7 @@ fn closure1() {
 // }
 
 // fn get_str(s: &String) -> &str {  // 这个签名实际上是下面的隐式
-// fn get_str<'a>(s: &'a String) -> &'a str { 
+// fn get_str<'a>(s: &'a String) -> &'a str {
 // &'static str -> &'a str, 这个当然是可以的，但是编译器没有把返回值声明为 'static
 fn get_str(s: &String) -> &'static str {
     println!("call fn {}", s);
@@ -291,13 +291,13 @@ fn mut_enum() {
         *a = EA2::B(32);
         println!("{:?}", a);
     }
-    
+
     // 共享不可变，可变不共享
     let mut a1 = 3_u8;
     let a2 = &a1; // 只读共享
     let a3 = &a1;
     let r1 = a2 + a3;
-    a1 = 4; // 上面的所有共享将会失效, 
+    a1 = 4; // 上面的所有共享将会失效,
     // let r2 = a2 + a3; // error
     // 这对于单线程，类型不可变的情况都是安全的，为什么要禁止，不允许通过编译（注：下面的 V1::test 里面显露出了原因）
     a1.to_string();
@@ -425,7 +425,7 @@ impl<T> Cell1<T> {
         // 长的生命周期可以传递给短的生命周期
     }
     // fn evil<'long: 'short,'short>(t: &Cell1<'long>, s: &'short isize) {
-    //     // The following assignment is not legal, 
+    //     // The following assignment is not legal,
     //     // but it escapes from lifetime checking
     //     let u: &Table<'short> = t;
     //     u.cell.set(s);
@@ -493,7 +493,7 @@ mod node2 {
             _ => ()
         }
     }
-    
+
     fn ref_cell3() {
         let node1 = Rc::new(RefCell::new(Node { next : None }));
         let node2 = Rc::new(RefCell::new(Node { next : None }));
@@ -522,7 +522,7 @@ fn cell2() {
 }
 
 fn rc1(v1: Rc<Vec<u8>>, v2: Rc<RefCell<Vec<u8>>>) {
-    // v1.clear(); // trait `DerefMut` 
+    // v1.clear(); // trait `DerefMut`
     v2.borrow_mut().clear();
 }
 
