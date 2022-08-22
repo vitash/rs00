@@ -1,6 +1,6 @@
 use std::fmt;
 use std::marker;
-use std::ops::Add;
+use std::ops::{Add, Deref};
 
 // type NeverErr<T> = Result<T, !>;
 struct A(u8, u8);
@@ -181,4 +181,39 @@ fn test_into_iter() {
     // new_iter 也是 &mut 类型，而且生命周期也是一样的
     // 卧槽，发现了什么东西，可以同时拥有两个 &mut 绑定，再看下一行
     // assert_eq!(Some(&"93"), new_iter.next());  // 想多了， &mut 也是有所有权的，
+}
+
+struct DerefA<'a>(&'a String);
+
+impl<'a> Deref for DerefA<'a> {
+    type Target = &'a mut String;
+
+    fn deref(&self) -> &Self::Target {
+        todo!()
+    }
+}
+
+fn deref_fn1(d: &DerefA, str1: &mut String) {
+    str1.push_str("strindg");
+    let s = <DerefA as Deref>::deref(&d);
+    //     ^ 看类型，解第一个引用已经报错了
+    // (*s).push_str("ds"); // impl<T> Deref for &T
+    // let s2 = *s;
+}
+
+struct DerefB(String);
+impl Deref for DerefB {
+    type Target = String;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+
+}
+
+
+fn deref_fn2(s: String) {
+    let s2 = &*s;
+    // *s 类型为 <String as Deref>::Target == str
+    // &*s 类型为 &Target
 }

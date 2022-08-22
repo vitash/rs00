@@ -11,60 +11,66 @@ fn example_15_2_1() {
     println!("{}", p2);
 }
 
-struct CellV1<T> {
-    value: T,
-}
-impl<T> CellV1<T> {
-    // fn set(&self, v: T) {
-    //     self.value = v;
-    // }
-}
-
-impl<T: Copy> CellV1<T> {
-    fn new(v: T) -> Self {
-        Self { value: v }
+mod m15_3 {
+    struct CellV1<T> {
+        value: T,
     }
-    fn get(&self) -> T {
-        self.value
+    impl<T> CellV1<T> {
+        // fn set(&self, v: T) {
+        //     self.value = v;
+        // }
     }
-}
 
-struct CellV2<T> {
-    value: T,
-}
-
-impl<T: Copy> CellV2<T> {
-    fn new(v: T) -> Self {
-        Self { value: v }
-    }
-    fn set(&self, v: T) {
-        unsafe {
-            let p = &(self.value) as *const T as *mut T;
-            *p = v;
+    impl<T: Copy> CellV1<T> {
+        fn new(v: T) -> Self {
+            Self { value: v }
+        }
+        fn get(&self) -> T {
+            self.value
         }
     }
-    fn get(&self) -> T {
-        self.value
-    }
-}
 
-struct Table<'arg> {
-    cell: CellV2<&'arg isize>,
-}
-fn evil<'long: 'short, 'short>(t: &Table<'long>, s: &'short isize) {
-    // The following assignment is not legal, but it escapes from lifetime checking
-    let u: &Table<'short> = t;
-    u.cell.set(s);
-}
-fn innocent<'long>(t: &Table<'long>) {
-    let foo: isize = 1;
-    evil(t, &foo);
-}
-fn main() {
-    let local = 100;
-    let table = Table { cell: CellV2::new(&local) };
-    innocent(&table);
-    // reads `foo`, which has been destroyed
-    let p = table.cell.get();
-    println!("{}", p);
+    // cellv2 ---------------
+    struct CellV2<T> {
+        value: T,
+    }
+
+    impl<T: Copy> CellV2<T> {
+        fn new(v: T) -> Self {
+            Self { value: v }
+        }
+        fn set(&self, v: T) {
+            unsafe {
+                let p = &(self.value) as *const T as *mut T;
+                *p = v;
+            }
+        }
+        fn get(&self) -> T {
+            self.value
+        }
+    }
+
+    struct Table<'arg> {
+        cell: CellV2<&'arg isize>,
+    }
+    fn evil<'long: 'short, 'short>(t: &Table<'long>, s: &'short isize) {
+        // The following assignment is not legal, but it escapes from lifetime checking
+        let u: &Table<'short> = t;
+        u.cell.set(s); // set 作为入参，是逆变的
+    }
+    fn innocent<'long>(t: &Table<'long>) {
+        let foo: isize = 1;
+        evil(t, &foo);
+    }
+
+    #[test]
+    fn test_cell_v2() {
+        let local = 100;
+        let table = Table { cell: CellV2::new(&local) };
+        innocent(&table);
+        // reads `foo`, which has been destroyed
+        let p = table.cell.get();
+        println!("{}", p);
+    }
+
 }

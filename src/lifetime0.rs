@@ -138,3 +138,72 @@ fn test_tup1() {
 
     println!("{x:?}");
 }
+
+mod borrow {
+    use std::borrow::Borrow;
+
+    struct S1();
+    impl std::borrow::ToOwned for S1 {
+        type Owned = S2;
+
+        fn to_owned(&self) -> Self::Owned {
+            todo!()
+        }
+    }
+    #[derive(Debug)]
+    struct S2();
+    impl std::borrow::Borrow<u32> for S2 {
+        fn borrow(&self) -> &u32 {
+            &32
+        }
+    }
+    impl std::borrow::Borrow<S1> for S2 {
+        fn borrow(&self) -> &S1 {
+            todo!()
+        }
+    }
+    impl AsRef<u8> for S2 {
+        fn as_ref(&self) -> &u8 {
+            &9
+        }
+    }
+
+    // #[test]
+    fn test_s2(s2: &S2) {
+        let x: &S1 = s2.borrow();
+        let y: &S1 = s2.borrow(); // 算是多个只读引用
+        println!("{s2:?}");
+        // let z = s2.borrow::<u32>();
+    }
+}
+
+mod xp_bm {
+    fn test_box<'a>(s: Box<&'static str>) {
+        let local: Box<&'a str> = s;
+    }
+
+    fn test_arg<'a>(f: fn(&'a mut str)) {
+        let local: fn(&'static mut str) = f;
+        // 这个只是指针的内容可变，但是指针是不能更改指向的
+        // 'static 是所有声明周期的底层类型
+        // 顶层类型：所有类型的基类
+        // 底层类型：它可以赋值给所有类型，是所有类型的子类
+    }
+
+    // 把 'static 当成底层类型，'static 是 'a 的子类型，返回值是协变的，书上说逆变是错的吧
+    fn test_ret<'a>(f: fn() -> &'static str) {
+        let local: fn() -> &'a str = f;
+    }
+
+    use std::cell::Cell;
+    fn test_cell<'a>(s: Cell<&'a str>) {
+        // Cell 特殊设计成参数不变的
+        // let local: Cell<&'static str> = s;
+    }
+
+    // 裸指针是不可变的，书上应该是过时了
+    fn test<'a, 'b: 'a>(s: *mut &'a str) {
+        // let local: *mut &'b str = s; // 如果可以，这里是逆变的
+    }
+
+}
