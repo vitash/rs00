@@ -57,3 +57,53 @@ fn alias_struct() {
     // let pb = &mut x[1];
     // 这个却不能借用了两个可变引用
 }
+
+mod drop_same_time {
+
+    struct T {
+        dropped: bool,
+    }
+    impl T {
+        fn new() -> Self {
+            T { dropped: false }
+        }
+    }
+    impl Drop for T {
+        fn drop(&mut self) {
+            println!("droppen T: {}", self.dropped);
+            self.dropped = true;
+        }
+    }
+
+    struct R<'a> {
+        inner: Option<&'a T>,
+    }
+    impl<'a> R<'a> {
+        fn new() -> Self {
+            R { inner: None }
+        }
+        fn set_ref(&mut self, ptr: &'a T) {
+            self.inner = Some(ptr);
+        }
+    }
+    impl<'a> Drop for R<'a> {
+        fn drop(&mut self) {
+            if let Some(inner) = self.inner {
+                println!("droppen R when T is {}", inner.dropped);
+            }
+        }
+    }
+
+    #[test]
+    fn main() {
+        {
+            let (a, mut b): (T, R) = (T::new(), R::new());
+            b.set_ref(&a);
+        }
+        {
+            // let (mut a, b): (R, T) = (R::new(), T::new());
+            // a.set_ref(&b);
+            // b 先释放，a 后释放，这里是错的，a 的 drop 函数引用了 b
+        }
+    }
+}
