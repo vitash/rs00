@@ -40,7 +40,17 @@ struct LifeTime<'a>(&'a str);
 struct LifeTime2<'a, T>(&'a str, T);
 // a1 生命周期声明可以省略, 泛型参数不可以省略
 fn lifetime2(a1: LifeTime2<'_, u32>, a2: LifeTime2<u32>) {
-    let a: LifeTime = LifeTime(a1.0); 
+    let a: LifeTime = LifeTime(a1.0);
     /* 所以为什么生命周期参数必须要放在类型参数的前面 */
 }
 
+fn use_iter<TIter>(mut iter: TIter)
+// fn use_iter<TItem: Iterator<Item: Debug>>(mut iter: TItem)
+where
+    TIter: Iterator,
+    TIter::Item: std::fmt::Debug,
+{
+    while let Some(i) = iter.next() {
+        println!("{:?}", i);
+    }
+}
